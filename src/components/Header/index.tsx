@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import styles from './index.module.css'
 
 import logoToDo from '../../assets/logo.svg';
