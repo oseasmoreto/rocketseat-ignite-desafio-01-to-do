@@ -24,7 +24,7 @@ export function TaskContainer({tasks, completedTasks, onDeleteTask, onUpdateTask
   return (
     <div className={styles.tasksContainer}>
       <div className={styles.info}>
-        <p className={styles.tasksCreated}>Tarefas criadas <span className={styles.counterTasks}>{ tasks.length }</span></p>
+        <p className={styles.tasksCreated}>Tarefas criadas <span className={styles.counterTasks}>{ tasks.length + completedTasks.length }</span></p>
         <p className={styles.tasksCompleted}>Concluídas <span className={styles.counterTasks}>{ completedTasks.length } de {completedTasks.length + tasks.length}</span></p>
       </div>
 
