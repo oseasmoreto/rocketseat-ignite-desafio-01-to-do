@@ -1,0 +1,21 @@
+.boxNoTask img {
+  margin-bottom: 1rem;
+}
+
+.boxNoTask{
+  margin-top: 1.5rem;
+  padding: 4rem 1.5rem;
+
+  color:var(--gray-300);
+  text-align: center;
+
+  line-height: 1.4;
+
+  border:none;
+  border-top: 1px solid var(--gray-400);
+  border-radius: 8px;
+}
+
+.boxNoTask .bold{
+  font-weight: bold;
+}
