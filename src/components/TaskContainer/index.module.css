@@ -52,6 +52,11 @@
   margin-top: 0.75rem;
 }
 
+.task p{
+  width: 100%;
+  text-align:left;
+}
+
 .taskCompleted{
   text-decoration: line-through;
   color: var(--gray-300);
