@@ -15,9 +15,10 @@ interface TaskContainerProps{
   tasks: Task[];
   completedTasks: Task[];
   onDeleteTask: (task: string, completed: boolean) => void;
+  onUpdateTask: (task: string, completed: boolean) => void;
 }
 
-export function TaskContainer({tasks, completedTasks,onDeleteTask} : TaskContainerProps) {
+export function TaskContainer({tasks, completedTasks, onDeleteTask, onUpdateTask} : TaskContainerProps) {
 
   return (
     <div className={styles.tasksContainer}>
@@ -37,6 +38,7 @@ export function TaskContainer({tasks, completedTasks,onDeleteTask} : TaskContain
                   content={task.content}
                   defaultChecked={task.completed}
                   onDeleteTask={onDeleteTask}
+                  onUpdateTask={onUpdateTask}
                 />
               )
             }) 
@@ -48,6 +50,7 @@ export function TaskContainer({tasks, completedTasks,onDeleteTask} : TaskContain
                   content={task.content}
                   defaultChecked={task.completed}
                   onDeleteTask={onDeleteTask}
+                  onUpdateTask={onUpdateTask}
                 />
               )
             }) 

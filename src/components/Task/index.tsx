@@ -7,31 +7,26 @@ import { TaskService } from '../../services/task.service';
 interface TaskProps extends InputHTMLAttributes<HTMLInputElement> {
   content: string;
   onDeleteTask: (task: string, completed: boolean) => void;
+  onUpdateTask: (task: string, completed: boolean) => void;
 }
 
-export function Task({ content, onDeleteTask, ...props} : TaskProps) {
+export function Task({ content, onDeleteTask, onUpdateTask, ...props} : TaskProps) {
 
-  function handleDeleteComment(){
+  function handleDeleteTask(){
     onDeleteTask(content,props.defaultChecked!);
   }
 
-  function handleChangeStatusTask(){
-    onDeleteTask(content,props.defaultChecked!);
-
-    if(props.defaultChecked){
-      const items = TaskService.getTasksLocalStorage('tasks-completed');
-
-      items.push({content: content, completed: true})
-    }
+  function handleUpdateTask(){
+    onUpdateTask(content,props.defaultChecked!);
   }
 
   return (
     <div key={content} className={styles.task}>
-      <input {...props} onChange={handleChangeStatusTask} type="checkbox" />
+      <input {...props} onChange={handleUpdateTask} type="checkbox" />
       <p className={ props.defaultChecked ? styles.taskCompleted : ''}>
         { content }
       </p>
-      <button onClick={() => handleDeleteComment()} className={styles.deleteTask}><Trash size="1.5rem" /></button>
+      <button onClick={() => handleDeleteTask()} className={styles.deleteTask}><Trash size="1.5rem" /></button>
     </div>
   )
 }

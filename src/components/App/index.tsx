@@ -11,8 +11,13 @@ export function App() {
   const [tasks, setTasks]                   = useState(TaskService.getTasksLocalStorage('tasks'));
   const [completedTasks, setCompletedTasks] = useState(TaskService.getTasksLocalStorage('tasks-completed'));
 
-  function deleteTask(taskToDelete: string, completed:boolean){
-
+  /**
+   * Função responsável por deletar a task
+   * @param string  taskToDelete 
+   * @param boolean completed 
+   * @returns 
+  */
+  function deleteTask(taskToDelete: string, completed:boolean): void{
     if(!completed){
       const tasksWithoutDeletedOn = tasks.filter(task => {
         return task.content !== taskToDelete;
@@ -20,7 +25,7 @@ export function App() {
   
       setTasks(tasksWithoutDeletedOn);
       TaskService.setTasksLocalStorage(tasksWithoutDeletedOn,'tasks');
-      return true;
+      return;
     }
 
     const tasksWithoutDeletedOn = completedTasks.filter(task => {
@@ -31,7 +36,11 @@ export function App() {
     TaskService.setTasksLocalStorage(tasksWithoutDeletedOn,'tasks-completed');
   }
 
-  function createTask(taskToCreate: string){
+  /**
+   * Função responsável por criar a task
+   * @param string taskToCreate 
+  */
+  function createTask(taskToCreate: string): void{
     const items = TaskService.getTasksLocalStorage('tasks') || [];
 
     items.push({
@@ -43,6 +52,37 @@ export function App() {
     setTasks(items);
   }
 
+  /**
+   * Função responsável por criar a task
+   * @param string taskToCreate 
+  */
+  function completedTask(taskToComplete: string): void{
+    const items = TaskService.getTasksLocalStorage('tasks-completed') || [];
+
+    items.push({
+      content: taskToComplete,
+      completed: true
+    })
+
+    TaskService.setTasksLocalStorage(items,'tasks-completed');
+    setCompletedTasks(items);
+  }
+
+  /**
+   * Função responsável por atualizar a task
+   * @param string taskToUpdate 
+  */
+  function updateTask(taskToUpdate: string, completed: boolean) :void{
+
+    deleteTask(taskToUpdate,completed);
+
+    //SE A TASK NÃO ESTIVER COMPLETA, ELA É COMPLETA
+    if(!completed) completedTask(taskToUpdate);
+
+    //SE A TASK ESTIVER COMPLETA, ELA É RECRIADA
+    if(completed) createTask(taskToUpdate);
+  }
+
   return (
     <div>
       <Header />
@@ -52,9 +92,10 @@ export function App() {
         />
         <main>
           <TaskContainer 
-          tasks={tasks}
-          completedTasks={completedTasks}
-          onDeleteTask={deleteTask}
+            tasks={tasks}
+            completedTasks={completedTasks}
+            onDeleteTask={deleteTask}
+            onUpdateTask={updateTask}
           />
         </main>
       </div>
