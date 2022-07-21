@@ -7,6 +7,7 @@ import styles from './index.module.css';
 import { TaskService } from "../../services/task.service";
 
 interface Task{
+  id: string;
   content: string;
   completed: boolean;
 }
@@ -15,7 +16,7 @@ interface TaskContainerProps{
   tasks: Task[];
   completedTasks: Task[];
   onDeleteTask: (task: string, completed: boolean) => void;
-  onUpdateTask: (task: string, completed: boolean) => void;
+  onUpdateTask: (id: string, task: string, completed: boolean) => void;
 }
 
 export function TaskContainer({tasks, completedTasks, onDeleteTask, onUpdateTask} : TaskContainerProps) {
@@ -34,7 +35,8 @@ export function TaskContainer({tasks, completedTasks, onDeleteTask, onUpdateTask
           { tasks.map(task =>{
               return (
                 <Task 
-                  key={task.content}
+                  key={task.id}
+                  id={task.id}
                   content={task.content}
                   defaultChecked={task.completed}
                   onDeleteTask={onDeleteTask}
@@ -46,7 +48,8 @@ export function TaskContainer({tasks, completedTasks, onDeleteTask, onUpdateTask
           { completedTasks.map(task =>{
               return (
                 <Task 
-                  key={task.content}
+                  key={task.id}
+                  id={task.id}
                   content={task.content}
                   defaultChecked={task.completed}
                   onDeleteTask={onDeleteTask}

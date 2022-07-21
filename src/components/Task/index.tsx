@@ -5,19 +5,20 @@ import styles from './index.module.css';
 import { TaskService } from '../../services/task.service';
 
 interface TaskProps extends InputHTMLAttributes<HTMLInputElement> {
+  id: string;
   content: string;
   onDeleteTask: (task: string, completed: boolean) => void;
-  onUpdateTask: (task: string, completed: boolean) => void;
+  onUpdateTask: (id:string, task: string, completed: boolean) => void;
 }
 
-export function Task({ content, onDeleteTask, onUpdateTask, ...props} : TaskProps) {
+export function Task({ id, content, onDeleteTask, onUpdateTask, ...props} : TaskProps) {
 
   function handleDeleteTask(){
-    onDeleteTask(content,props.defaultChecked!);
+    onDeleteTask(id,props.defaultChecked!);
   }
 
   function handleUpdateTask(){
-    onUpdateTask(content,props.defaultChecked!);
+    onUpdateTask(id,content,props.defaultChecked!);
   }
 
   return (

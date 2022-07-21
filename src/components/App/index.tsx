@@ -5,6 +5,8 @@ import { TaskContainer } from '../TaskContainer';
 
 import styles from './index.module.css';
 
+import { v4 as uuidv4 } from 'uuid';
+
 import { TaskService } from "../../services/task.service";
 
 export function App() {
@@ -20,7 +22,7 @@ export function App() {
   function deleteTask(taskToDelete: string, completed:boolean): void{
     if(!completed){
       const tasksWithoutDeletedOn = tasks.filter(task => {
-        return task.content !== taskToDelete;
+        return task.id !== taskToDelete;
       });
   
       setTasks(tasksWithoutDeletedOn);
@@ -29,7 +31,7 @@ export function App() {
     }
 
     const tasksWithoutDeletedOn = completedTasks.filter(task => {
-      return task.content !== taskToDelete;
+      return task.id !== taskToDelete;
     });
 
     setCompletedTasks(tasksWithoutDeletedOn);
@@ -44,6 +46,7 @@ export function App() {
     const items = TaskService.getTasksLocalStorage('tasks') || [];
 
     items.push({
+      id: uuidv4(),
       content: taskToCreate,
       completed: false
     })
@@ -60,6 +63,7 @@ export function App() {
     const items = TaskService.getTasksLocalStorage('tasks-completed') || [];
 
     items.push({
+      id: uuidv4(),
       content: taskToComplete,
       completed: true
     })
@@ -72,9 +76,11 @@ export function App() {
    * Função responsável por atualizar a task
    * @param string taskToUpdate 
   */
-  function updateTask(taskToUpdate: string, completed: boolean) :void{
+  function updateTask(id: string, taskToUpdate: string, completed: boolean) :void{
 
-    deleteTask(taskToUpdate,completed);
+    deleteTask(id,completed);
+
+    console.log(id);
 
     //SE A TASK NÃO ESTIVER COMPLETA, ELA É COMPLETA
     if(!completed) completedTask(taskToUpdate);
