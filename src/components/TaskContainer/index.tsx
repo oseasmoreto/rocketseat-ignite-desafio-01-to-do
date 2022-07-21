@@ -1,28 +1,14 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { NoTask } from '../NoTask';
 import { Task } from '../Task';
 
 import styles from './index.module.css';
 
+import { TaskService } from "../../services/task.service";
+
 export function TaskContainer() {
-
-  const [tasks, setTasks] = useState([
-    {
-      completed: false,
-      content: "Fazer curso do mês."
-    }
-  ]);
-
-  const [completedTasks, setCompletedTasks] = useState([
-    {
-      completed: true,
-      content: "Ir na academia."
-    },
-    {
-      completed: true,
-      content: "Comer um pastel"
-    }
-  ]);
+  const [tasks, setTasks]                   = useState(TaskService.getTasksLocalStorage('tasks'));
+  const [completedTasks, setCompletedTasks] = useState(TaskService.getTasksLocalStorage('tasks-completed'));
 
   function deleteTask(taskToDelete: string, completed:boolean){
 
@@ -32,6 +18,7 @@ export function TaskContainer() {
       });
   
       setTasks(tasksWithoutDeletedOn);
+      TaskService.setTasksLocalStorage(tasksWithoutDeletedOn,'tasks');
       return true;
     }
 
@@ -40,8 +27,13 @@ export function TaskContainer() {
     });
 
     setCompletedTasks(tasksWithoutDeletedOn);
-
+    TaskService.setTasksLocalStorage(tasksWithoutDeletedOn,'tasks-completed');
   }
+
+  useEffect(() => {
+    const items = TaskService.getTasksLocalStorage('tasks');
+    setTasks(items);
+  }, tasks);
 
   return (
     <div className={styles.tasksContainer}>
