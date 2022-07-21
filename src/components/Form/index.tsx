@@ -1,16 +1,42 @@
 import { PlusCircle } from 'phosphor-react'
+import { ChangeEvent, FormEvent, InvalidEvent, useState } from 'react';
 import styles from './index.module.css'
 
 export function Form() {
- return (
+
+  const [task, setTask] = useState('');
+
+  function handleCreateNewTask(event: FormEvent){
+    event.preventDefault();
+
+    setTask('');
+  }
+
+  function handleNewTextTask(event: ChangeEvent<HTMLInputElement>){
+    event.target.setCustomValidity('');
+    setTask(event.target.value);
+  }
+
+  function handleNewTaskInvalid(event: InvalidEvent<HTMLInputElement>){
+    event.target.setCustomValidity('Este campo é obrigatório');
+  }
+
+  const isNewTaskEmpty = task.length === 0;
+
+  return (
     <div className={styles.form}>
-      <form method="post">
+      <form onSubmit={handleCreateNewTask} method="post">
         <input 
           type="text" 
+          name="task" 
           placeholder="Adicione uma nova tarefa"
+          onChange={handleNewTextTask} 
+          value={task} 
+          onInvalid={handleNewTaskInvalid}
+          required
         />
-        <button className={styles.createToDo} type="submit">Criar <PlusCircle size={16} /></button>
+        <button disabled={isNewTaskEmpty} className={styles.createToDo} type="submit">Criar <PlusCircle size={16} /></button>
       </form>
     </div>
- )
+  )
 }
