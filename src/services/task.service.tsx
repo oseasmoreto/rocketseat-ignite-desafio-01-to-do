@@ -1,12 +1,12 @@
 interface Task{
   content: string;
-  completed: false;
+  completed: boolean;
 }
 
 export const TaskService = {
   initTaskLocalStorage: function(type: string){
     if(!localStorage.getItem(type)){
-      localStorage.setItem(type,'[]');
+      localStorage.setItem(type,JSON.stringify([]));
     }
   },
   setTasksLocalStorage: function(tasks: Task[], type: string) : Task[]{
@@ -14,6 +14,6 @@ export const TaskService = {
     return tasks;
   },
   getTasksLocalStorage: function(type: string) : Task[]{
-    return JSON.parse(localStorage.getItem(type)!);
+    return JSON.parse(localStorage.getItem(type)!) || [];
   }
 }

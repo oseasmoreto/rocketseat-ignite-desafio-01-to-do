@@ -6,34 +6,18 @@ import styles from './index.module.css';
 
 import { TaskService } from "../../services/task.service";
 
-export function TaskContainer() {
-  const [tasks, setTasks]                   = useState(TaskService.getTasksLocalStorage('tasks'));
-  const [completedTasks, setCompletedTasks] = useState(TaskService.getTasksLocalStorage('tasks-completed'));
+interface Task{
+  content: string;
+  completed: boolean;
+}
 
-  function deleteTask(taskToDelete: string, completed:boolean){
+interface TaskContainerProps{
+  tasks: Task[];
+  completedTasks: Task[];
+  onDeleteTask: (task: string, completed: boolean) => void;
+}
 
-    if(!completed){
-      const tasksWithoutDeletedOn = tasks.filter(task => {
-        return task.content !== taskToDelete;
-      });
-  
-      setTasks(tasksWithoutDeletedOn);
-      TaskService.setTasksLocalStorage(tasksWithoutDeletedOn,'tasks');
-      return true;
-    }
-
-    const tasksWithoutDeletedOn = completedTasks.filter(task => {
-      return task.content !== taskToDelete;
-    });
-
-    setCompletedTasks(tasksWithoutDeletedOn);
-    TaskService.setTasksLocalStorage(tasksWithoutDeletedOn,'tasks-completed');
-  }
-
-  useEffect(() => {
-    const items = TaskService.getTasksLocalStorage('tasks');
-    setTasks(items);
-  }, tasks);
+export function TaskContainer({tasks, completedTasks,onDeleteTask} : TaskContainerProps) {
 
   return (
     <div className={styles.tasksContainer}>
@@ -47,25 +31,27 @@ export function TaskContainer() {
       {(tasks.length > 0 || completedTasks.length > 0) &&
         <div className={styles.boxTasks}>
           { tasks.map(task =>{
-            return (
-              <Task 
-                key={task.content}
-                content={task.content}
-                defaultChecked={task.completed}
-                onDeleteTask={deleteTask}
-              />
-            )
-          }) }
+              return (
+                <Task 
+                  key={task.content}
+                  content={task.content}
+                  defaultChecked={task.completed}
+                  onDeleteTask={onDeleteTask}
+                />
+              )
+            }) 
+          }
           { completedTasks.map(task =>{
-            return (
-              <Task 
-                key={task.content}
-                content={task.content}
-                defaultChecked={task.completed}
-                onDeleteTask={deleteTask}
-              />
-            )
-          }) }
+              return (
+                <Task 
+                  key={task.content}
+                  content={task.content}
+                  defaultChecked={task.completed}
+                  onDeleteTask={onDeleteTask}
+                />
+              )
+            }) 
+          }
         </div> 
       }
     </div>

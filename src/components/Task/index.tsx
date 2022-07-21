@@ -2,6 +2,7 @@ import { InputHTMLAttributes, useState } from 'react'
 import { Trash } from 'phosphor-react'
 
 import styles from './index.module.css';
+import { TaskService } from '../../services/task.service';
 
 interface TaskProps extends InputHTMLAttributes<HTMLInputElement> {
   content: string;
@@ -14,9 +15,19 @@ export function Task({ content, onDeleteTask, ...props} : TaskProps) {
     onDeleteTask(content,props.defaultChecked!);
   }
 
+  function handleChangeStatusTask(){
+    onDeleteTask(content,props.defaultChecked!);
+
+    if(props.defaultChecked){
+      const items = TaskService.getTasksLocalStorage('tasks-completed');
+
+      items.push({content: content, completed: true})
+    }
+  }
+
   return (
     <div key={content} className={styles.task}>
-      <input {...props} type="checkbox" />
+      <input {...props} onChange={handleChangeStatusTask} type="checkbox" />
       <p className={ props.defaultChecked ? styles.taskCompleted : ''}>
         { content }
       </p>
